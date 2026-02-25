@@ -5,15 +5,17 @@ import numpy as np
 
 app = Flask(__name__)
 
-with open('models/kmeans_model.pkl', 'rb') as f:
-    kmeans_model = pickle.load(f)
-with open('models/kmeans_scaler.pkl', 'rb') as f:
+with open('model/kmean_scaler.pkl', 'rb') as f:
     kmeans_scaler = pickle.load(f)
 
-with open('models/linear_model.pkl', 'rb') as f:
-    linear_model = pickle.load(f)
-with open('models/linear_scaler.pkl', 'rb') as f:
+with open('model/Kmean.pkl', 'rb') as f:
+    kmeans_model = pickle.load(f)
+
+with open('model/Scaler.pkl', 'rb') as f:
     linear_scaler = pickle.load(f)
+
+with open('model/Linear_model.pkl', 'rb') as f:
+    linear_model = pickle.load(f)
 
 # ----------------------------------------------------------------------
 @app.route('/')

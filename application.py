@@ -126,9 +126,8 @@ def regression_predict():
         input_df = pd.DataFrame(input_data, columns=columns)
 
         input_scaled = linear_scaler.transform(input_df.values)
-        prediction = linear_model.predict(input_scaled)[0]
-
-        result = f"Predicted Calories Burned: {prediction:.1f} kcal"
+        prediction = linear_model.predict(input_scaled)
+        result = f"Predicted Calories Burned: {float(prediction.ravel()[0]):.1f} kcal"
         return render_template('regression.html', result=result)
 
     except Exception as e:

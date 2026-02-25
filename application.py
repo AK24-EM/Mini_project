@@ -111,7 +111,7 @@ def regression_predict():
             carbs, proteins, fats, calories_diet,
             hrr, pct_maxhr, lean_mass, age2, bmi_x_freq,
             num_benefits, num_muscle_groups, num_exercises,
-            cardio, hiit, strength, yoga
+            hiit, strength, yoga
         ]]
 
         columns = [
@@ -121,7 +121,7 @@ def regression_predict():
             'Daily meals frequency', 'Carbs', 'Proteins', 'Fats', 'Calories',
             'HRR', 'pct_maxHR', 'lean_mass_kg', 'Age2', 'BMI_x_Freq',
             'num_benefits', 'num_muscle_groups', 'num_exercises',
-            'Workout_Type_Cardio', 'Workout_Type_HIIT', 'Workout_Type_Strength', 'Workout_Type_Yoga'
+            'Workout_Type_HIIT', 'Workout_Type_Strength', 'Workout_Type_Yoga'
         ]
 
         input_df = pd.DataFrame(input_data, columns=columns)

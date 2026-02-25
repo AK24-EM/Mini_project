@@ -89,7 +89,6 @@ def regression_predict():
         proteins = float(request.form['proteins'])
         fats = float(request.form['fats'])
         calories_diet = float(request.form['calories_diet'])
-        cardio = float(request.form['cardio'])
         hiit = float(request.form['hiit'])
         strength = float(request.form['strength'])
         yoga = float(request.form['yoga'])

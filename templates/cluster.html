@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Risk Clustering</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(45deg, #764ba2, #667eea);
+        }
+
+        .result-alert {
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔬 Health Risk Clustering</h2>
+                        <p class="mb-0">Enter your health metrics</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/cluster_predict" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="age" class="form-label">Age</label>
+                                    <input type="number" step="any" class="form-control" id="age" name="age"
+                                        placeholder="e.g. 30" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="weight" class="form-label">Weight (kg)</label>
+                                    <input type="number" step="any" class="form-control" id="weight" name="weight"
+                                        placeholder="e.g. 75" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="height" class="form-label">Height (m)</label>
+                                    <input type="number" step="any" class="form-control" id="height" name="height"
+                                        placeholder="e.g. 1.75" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="bmi" class="form-label">BMI</label>
+                                    <input type="number" step="any" class="form-control" id="bmi" name="bmi"
+                                        placeholder="e.g. 24.5" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fat" class="form-label">Fat Percentage</label>
+                                    <input type="number" step="any" class="form-control" id="fat" name="fat"
+                                        placeholder="e.g. 20" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="resting_bpm" class="form-label">Resting BPM</label>
+                                    <input type="number" step="any" class="form-control" id="resting_bpm"
+                                        name="resting_bpm" placeholder="e.g. 60" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="avg_bpm" class="form-label">Average BPM</label>
+                                    <input type="number" step="any" class="form-control" id="avg_bpm" name="avg_bpm"
+                                        placeholder="e.g. 140" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="max_bpm" class="form-label">Max BPM</label>
+                                    <input type="number" step="any" class="form-control" id="max_bpm" name="max_bpm"
+                                        placeholder="e.g. 180" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="session_dur" class="form-label">Session Duration (hours)</label>
+                                    <input type="number" step="any" class="form-control" id="session_dur"
+                                        name="session_dur" placeholder="e.g. 1.2" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="frequency" class="form-label">Workout Frequency (days/week)</label>
+                                    <input type="number" step="any" class="form-control" id="frequency" name="frequency"
+                                        placeholder="e.g. 4" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experience" class="form-label">Experience Level (1-3)</label>
+                                    <input type="number" step="any" class="form-control" id="experience"
+                                        name="experience" placeholder="e.g. 2" required>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Predict Cluster</button>
+                            </div>
+                        </form>
+
+                        {% if result %}
+                        <div class="alert alert-info result-alert mt-4" role="alert">
+                            <h5 class="alert-heading">Result</h5>
+                            <p class="mb-0">{{ result }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="text-center mt-3">
+                            <a href="/" class="text-decoration-none">← Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

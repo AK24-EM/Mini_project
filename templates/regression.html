@@ -4,223 +4,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calorie Burn Prediction</title>
+    <title>Calorie Burn Prediction | Fitness Intelligence</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.05);
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--dark);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0, transparent 50%);
             min-height: 100vh;
-            display: flex;
+            padding: 2rem 0;
+            font-family: 'Outfit', sans-serif;
+            color: #f8fafc;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 2rem;
         }
 
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 900px;
+        .back-link:hover {
+            color: var(--primary);
+            transform: translateX(-5px);
         }
 
-        .card-header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 15px 15px 0 0 !important;
-            padding: 1.5rem;
+        .main-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 3rem 2rem;
             text-align: center;
         }
 
-        .card-header h2 {
+        .card-header-gradient h2 {
+            font-weight: 700;
             margin: 0;
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-size: 2.2rem;
+            letter-spacing: -0.025em;
         }
 
         .form-label {
+            color: #94a3b8;
             font-weight: 500;
-            color: #495057;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
         }
 
-        .form-control,
-        .form-select {
-            border-radius: 10px;
-            border: 1px solid #ced4da;
-            padding: 0.75rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+            width: 14px;
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        .form-control {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            color: white;
+            transition: all 0.3s;
+            font-size: 0.95rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border: none;
-            border-radius: 10px;
-            padding: 0.75rem;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            color: white;
         }
 
-        .btn-primary:hover {
-            transform: scale(1.02);
-            background: linear-gradient(45deg, #764ba2, #667eea);
-        }
-
-        .result-alert {
-            border-radius: 10px;
-            margin-top: 1rem;
+        .form-control::placeholder {
+            color: #475569;
         }
 
         fieldset {
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            background: rgba(255, 255, 255, 0.01);
         }
 
         legend {
             width: auto;
-            padding: 0 10px;
-            font-size: 1.2rem;
+            padding: 0 15px;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #667eea;
+            color: var(--primary);
+            float: none;
+            margin-bottom: 0;
+        }
+
+        .btn-predict {
+            background: white;
+            color: var(--dark);
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: #f1f5f9;
+        }
+
+        .result-container {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            background: #22c55e;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .result-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(to right, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container animate__animated animate__fadeIn">
         <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🔥 Calorie Burn Prediction</h2>
-                        <p class="mb-0">Enter your personal and workout details</p>
+            <div class="col-xl-10">
+                <a href="/" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard
+                </a>
+
+                <div class="main-card">
+                    <div class="card-header-gradient">
+                        <div class="mb-3">
+                            <i class="fas fa-fire fa-3x"></i>
+                        </div>
+                        <h2>Calorie Expenditure</h2>
+                        <p class="mb-0 text-white-50">Precision metabolic prediction via Linear Regression</p>
                     </div>
-                    <div class="card-body p-4">
+
+                    <div class="card-body p-4 p-md-5">
                         <form action="/regression_predict" method="post">
                             <fieldset>
-                                <legend>Personal & Session</legend>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="age" class="form-label">Age</label>
+                                <legend><i class="fas fa-user-circle me-2"></i>Personal Biometrics</legend>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label for="age" class="form-label"><i class="fas fa-calendar"></i>Age</label>
                                         <input type="number" step="any" class="form-control" id="age" name="age"
-                                            placeholder="e.g. 30" required>
+                                            placeholder="Years" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="gender" class="form-label">Gender (0=Female, 1=Male)</label>
+                                    <div class="col-md-3">
+                                        <label for="gender" class="form-label"><i class="fas fa-venus-mars"></i>Gender
+                                            (0=F, 1=M)</label>
                                         <input type="number" step="any" class="form-control" id="gender" name="gender"
                                             placeholder="0 or 1" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="weight" class="form-label">Weight (kg)</label>
+                                    <div class="col-md-3">
+                                        <label for="weight" class="form-label"><i
+                                                class="fas fa-weight-hanging"></i>Weight (kg)</label>
                                         <input type="number" step="any" class="form-control" id="weight" name="weight"
-                                            placeholder="e.g. 75" required>
+                                            placeholder="kg" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="height" class="form-label">Height (m)</label>
+                                    <div class="col-md-3">
+                                        <label for="height" class="form-label"><i
+                                                class="fas fa-ruler-vertical"></i>Height (m)</label>
                                         <input type="number" step="any" class="form-control" id="height" name="height"
-                                            placeholder="e.g. 1.75" required>
+                                            placeholder="m" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="bmi" class="form-label">BMI</label>
+                                    <div class="col-md-3">
+                                        <label for="bmi" class="form-label"><i class="fas fa-calculator"></i>BMI</label>
                                         <input type="number" step="any" class="form-control" id="bmi" name="bmi"
-                                            placeholder="e.g. 24.5" required>
+                                            placeholder="BMI" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="fat" class="form-label">Fat Percentage</label>
+                                    <div class="col-md-3">
+                                        <label for="fat" class="form-label"><i class="fas fa-percent"></i>Fat %</label>
                                         <input type="number" step="any" class="form-control" id="fat" name="fat"
-                                            placeholder="e.g. 20" required>
+                                            placeholder="Fat %" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="resting_bpm" class="form-label">Resting BPM</label>
+                                    <div class="col-md-3">
+                                        <label for="resting_bpm" class="form-label"><i
+                                                class="fas fa-heartbeat"></i>Resting BPM</label>
                                         <input type="number" step="any" class="form-control" id="resting_bpm"
-                                            name="resting_bpm" placeholder="e.g. 60" required>
+                                            name="resting_bpm" placeholder="BPM" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="avg_bpm" class="form-label">Average BPM</label>
+                                    <div class="col-md-3">
+                                        <label for="avg_bpm" class="form-label"><i class="fas fa-wave-square"></i>Avg
+                                            BPM</label>
                                         <input type="number" step="any" class="form-control" id="avg_bpm" name="avg_bpm"
-                                            placeholder="e.g. 140" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="max_bpm" class="form-label">Max BPM</label>
-                                        <input type="number" step="any" class="form-control" id="max_bpm" name="max_bpm"
-                                            placeholder="e.g. 180" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="session_dur" class="form-label">Session Duration (hours)</label>
-                                        <input type="number" step="any" class="form-control" id="session_dur"
-                                            name="session_dur" placeholder="e.g. 1.2" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="frequency" class="form-label">Workout Frequency (days/week)</label>
-                                        <input type="number" step="any" class="form-control" id="frequency"
-                                            name="frequency" placeholder="e.g. 4" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="experience" class="form-label">Experience Level (1-3)</label>
-                                        <input type="number" step="any" class="form-control" id="experience"
-                                            name="experience" placeholder="e.g. 2" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="water" class="form-label">Water Intake (liters)</label>
-                                        <input type="number" step="any" class="form-control" id="water" name="water"
-                                            placeholder="e.g. 2.5" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="meals" class="form-label">Daily Meals</label>
-                                        <input type="number" step="any" class="form-control" id="meals" name="meals"
-                                            placeholder="e.g. 3" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="carbs" class="form-label">Carbs (g)</label>
-                                        <input type="number" step="any" class="form-control" id="carbs" name="carbs"
-                                            placeholder="e.g. 250" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="proteins" class="form-label">Proteins (g)</label>
-                                        <input type="number" step="any" class="form-control" id="proteins"
-                                            name="proteins" placeholder="e.g. 100" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="fats" class="form-label">Fats (g)</label>
-                                        <input type="number" step="any" class="form-control" id="fats" name="fats"
-                                            placeholder="e.g. 70" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="calories_diet" class="form-label">Dietary Calories</label>
-                                        <input type="number" step="any" class="form-control" id="calories_diet"
-                                            name="calories_diet" placeholder="e.g. 2000" required>
+                                            placeholder="Workout Avg" required>
                                     </div>
                                 </div>
                             </fieldset>
 
                             <fieldset>
-                                <legend>Workout Type</legend>
-                                <div class="row">
-                                    <div class="col-md-3 mb-3">
+                                <legend><i class="fas fa-utensils me-2"></i>Dietary Profile</legend>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="water" class="form-label"><i class="fas fa-tint"></i>Water
+                                            (liters)</label>
+                                        <input type="number" step="any" class="form-control" id="water" name="water"
+                                            placeholder="Daily Intake" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="meals" class="form-label"><i class="fas fa-clock"></i>Meal
+                                            Freq</label>
+                                        <input type="number" step="any" class="form-control" id="meals" name="meals"
+                                            placeholder="per day" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="calories_diet" class="form-label"><i
+                                                class="fas fa-apple-alt"></i>Total Cal</label>
+                                        <input type="number" step="any" class="form-control" id="calories_diet"
+                                            name="calories_diet" placeholder="Daily Total" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="carbs" class="form-label"><i class="fas fa-bread-slice"></i>Carbs
+                                            (g)</label>
+                                        <input type="number" step="any" class="form-control" id="carbs" name="carbs"
+                                            placeholder="Grams" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="proteins" class="form-label"><i class="fas fa-egg"></i>Proteins
+                                            (g)</label>
+                                        <input type="number" step="any" class="form-control" id="proteins"
+                                            name="proteins" placeholder="Grams" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="fats" class="form-label"><i class="fas fa-cheese"></i>Fats
+                                            (g)</label>
+                                        <input type="number" step="any" class="form-control" id="fats" name="fats"
+                                            placeholder="Grams" required>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend><i class="fas fa-dumbbell me-2"></i>Session Dynamics</legend>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="session_dur" class="form-label"><i
+                                                class="fas fa-hourglass-half"></i>Duration (hr)</label>
+                                        <input type="number" step="any" class="form-control" id="session_dur"
+                                            name="session_dur" placeholder="Hours" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="frequency" class="form-label"><i
+                                                class="fas fa-calendar-check"></i>Freq (days/wk)</label>
+                                        <input type="number" step="any" class="form-control" id="frequency"
+                                            name="frequency" placeholder="Weekly" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="experience" class="form-label"><i class="fas fa-award"></i>Exp
+                                            Level</label>
+                                        <input type="number" step="any" class="form-control" id="experience"
+                                            name="experience" placeholder="1 to 3" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="max_bpm" class="form-label"><i class="fas fa-heartbeat"></i>Peak
+                                            BPM</label>
+                                        <input type="number" step="any" class="form-control" id="max_bpm" name="max_bpm"
+                                            placeholder="Beats/min" required>
+                                    </div>
+                                </div>
+                                <hr class="my-4 border-secondary border-opacity-25">
+                                <p class="form-label mb-3"><i class="fas fa-running"></i>Workout Modality (Select for
+                                    current session)</p>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
                                         <label for="cardio" class="form-label">Cardio (0/1)</label>
                                         <input type="number" step="any" class="form-control" id="cardio" name="cardio"
-                                            value="0" required>
+                                            value="1" required>
                                     </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-3">
                                         <label for="hiit" class="form-label">HIIT (0/1)</label>
                                         <input type="number" step="any" class="form-control" id="hiit" name="hiit"
                                             value="0" required>
                                     </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-3">
                                         <label for="strength" class="form-label">Strength (0/1)</label>
                                         <input type="number" step="any" class="form-control" id="strength"
                                             name="strength" value="0" required>
                                     </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-3">
                                         <label for="yoga" class="form-label">Yoga (0/1)</label>
                                         <input type="number" step="any" class="form-control" id="yoga" name="yoga"
                                             value="0" required>
@@ -228,26 +356,30 @@
                                 </div>
                             </fieldset>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Predict Calories</button>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-predict">Synthesize Calculation</button>
                             </div>
                         </form>
 
                         {% if result %}
-                        <div class="alert alert-success result-alert mt-4" role="alert">
-                            <h5 class="alert-heading">Result</h5>
-                            <p class="mb-0">{{ result }}</p>
+                        <div class="result-container">
+                            <span class="result-badge">ANALYTICAL OUTPUT</span>
+                            <p class="result-text">{{ result }}</p>
                         </div>
                         {% endif %}
-
-                        <div class="text-center mt-3">
-                            <a href="/" class="text-decoration-none">← Back to Home</a>
-                        </div>
                     </div>
+                </div>
+
+                <div class="text-center mt-4 text-muted" style="font-size: 0.8rem;">
+                    <p><i class="fas fa-info-circle me-1"></i>Caloric expenditure is determined via multi-variate
+                        regression analysis including metabolic equivalent of task (MET) estimates.</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

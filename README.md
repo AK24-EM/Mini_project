@@ -5,6 +5,8 @@ An AI-powered Flask application designed to analyze physical activity data, pred
 ## 🚀 Overview
 This project leverages data-driven insights to help users understand their fitness performance and health status. By integrating regression and clustering models, it provides real-time predictions for calories burned and categorizes health risks based on physiological and lifestyle metrics.
 
+**Dataset**: [Lifestyle & Fitness Data (Kaggle)](https://www.kaggle.com/datasets/jockeroika/life-style-data?select=Final_data.csv)
+
 ---
 
 ## 💼 Business Problem Statement

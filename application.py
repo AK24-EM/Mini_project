@@ -43,13 +43,11 @@ def cluster_predict():
         experience = float(request.form['experience'])
 
         # Build DataFrame with correct order (must match training)
-        input_df = pd.DataFrame([[age, weight, height, bmi, fat,
-                                   resting_bpm, avg_bpm, max_bpm,
-                                   session_dur, frequency, experience]],
+        input_df = pd.DataFrame([[age, weight, height, bmi, fat, session_dur,
+                                   resting_bpm, avg_bpm, max_bpm, frequency, experience]],
                                  columns=['Age', 'Weight (kg)', 'Height (m)',
-                                          'BMI', 'Fat_Percentage',
+                                          'BMI', 'Fat_Percentage', 'Session_Duration (hours)',
                                           'Resting_BPM', 'Avg_BPM', 'Max_BPM',
-                                          'Session_Duration (hours)',
                                           'Workout_Frequency (days/week)',
                                           'Experience_Level'])
 

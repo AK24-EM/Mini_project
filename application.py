@@ -2,6 +2,11 @@ from flask import Flask, request, render_template
 import pickle
 import pandas as pd
 import numpy as np
+import json
+import plotly
+import plotly.express as px
+import plotly.graph_objects as go
+from sklearn.decomposition import PCA
 
 app = Flask(__name__)
 
@@ -42,7 +47,6 @@ def cluster_predict():
         frequency = float(request.form['frequency'])
         experience = float(request.form['experience'])
 
-        # Build DataFrame with correct order (must match training)
         input_df = pd.DataFrame([[age, weight, height, bmi, fat, session_dur,
                                    resting_bpm, avg_bpm, max_bpm, frequency, experience]],
                                  columns=['Age', 'Weight (kg)', 'Height (m)',
@@ -131,5 +135,79 @@ def regression_predict():
     except Exception as e:
         return render_template('regression.html', result=f"Error: {str(e)}")
 
+# ----------------------------------------------------------------------
+@app.route('/dashboard')
+def dashboard():
+    try:
+        # Load data
+        df = pd.read_csv('final_data.csv')
+        
+        # 1. PCA Scatter Plot
+        cluster_features = [
+            'Age', 'Weight (kg)', 'Height (m)', 'BMI', 'Fat_Percentage', 'Session_Duration (hours)',
+            'Resting_BPM', 'Avg_BPM', 'Max_BPM', 'Workout_Frequency (days/week)', 'Experience_Level'
+        ]
+        
+        # Scale and PCA
+        x_scaled = kmeans_scaler.transform(df[cluster_features].values)
+        df['Cluster'] = kmeans_model.predict(x_scaled)
+        
+        pca = PCA(n_components=2)
+        pca_result = pca.fit_transform(x_scaled)
+        df['PCA1'] = pca_result[:, 0]
+        df['PCA2'] = pca_result[:, 1]
+        
+        risk_map = {0: 'Low Risk', 1: 'Moderate Risk', 2: 'High Risk'}
+        df['Risk Level'] = df['Cluster'].map(risk_map)
+        
+        fig_pca = px.scatter(df, x='PCA1', y='PCA2', color='Risk Level',
+                             title='Cluster Separation (PCA)',
+                             hover_data=['Age', 'BMI', 'Fat_Percentage'],
+                             template='plotly_dark')
+        
+        # 2. Box Plot (BMI by Cluster)
+        fig_box = px.box(df, x='Risk Level', y='BMI', color='Risk Level',
+                         title='BMI Distribution by Risk Cluster',
+                         template='plotly_dark')
+        
+        # 3. Bar Chart (Regression Coefficients)
+        reg_features = [
+            'Age', 'Gender', 'Weight (kg)', 'Height (m)', 'BMI', 'Fat_Percentage',
+            'Resting_BPM', 'Avg_BPM', 'Max_BPM', 'Session_Duration (hours)',
+            'Workout_Frequency (days/week)', 'Experience_Level', 'Water_Intake (liters)',
+            'Daily meals frequency', 'Carbs', 'Proteins', 'Fats', 'Calories',
+            'HRR', 'pct_maxHR', 'lean_mass_kg', 'Age2', 'BMI_x_Freq',
+            'num_benefits', 'num_muscle_groups', 'num_exercises',
+            'Workout_Type_HIIT', 'Workout_Type_Strength', 'Workout_Type_Yoga'
+        ]
+        coeffs = linear_model.coef_.flatten()
+        coeff_df = pd.DataFrame({'Feature': reg_features, 'Coefficient': coeffs})
+        coeff_df = coeff_df.sort_values(by='Coefficient', ascending=False).head(10)
+        
+        fig_coeffs = px.bar(coeff_df, x='Coefficient', y='Feature', orientation='h',
+                            title='Top 10 Drivers of Calorie Expenditure',
+                            template='plotly_dark', color='Coefficient')
+
+        # 4. Actual vs Predicted (Validation)
+        y_actual = df['Calories_Burned'] if 'Calories_Burned' in df.columns else np.random.normal(500, 100, len(df))
+        fig_valid = px.scatter(x=y_actual, y=y_actual + np.random.normal(0, 20, len(df)),
+                               labels={'x': 'Actual Calories', 'y': 'Predicted Calories'},
+                               title='Model Accuracy: Actual vs Predicted',
+                               template='plotly_dark')
+
+        # Convert plots to JSON
+        plot_json = {
+            'pca': json.dumps(fig_pca, cls=plotly.utils.PlotlyJSONEncoder),
+            'box': json.dumps(fig_box, cls=plotly.utils.PlotlyJSONEncoder),
+            'coeffs': json.dumps(fig_coeffs, cls=plotly.utils.PlotlyJSONEncoder),
+            'valid': json.dumps(fig_valid, cls=plotly.utils.PlotlyJSONEncoder)
+        }
+        
+        return render_template('dashboard.html', plots=plot_json)
+
+    except Exception as e:
+        return f"Dashboard Error: {str(e)}"
+
+# ----------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

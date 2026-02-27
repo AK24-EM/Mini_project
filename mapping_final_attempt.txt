@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import pickle, numpy as np; s=pickle.load(open('model/kmean_scaler.pkl','rb')); m=pickle.load(open('model/Kmean.pkl','rb')); low=np.array([[32,65,1.72,22.0,20,1.2,58,130,185,4,3]]); mod=np.array([[39,78,1.72,26.3,27,1.0,62,125,175,3,2]]); print(f'L:{m.predict(s.transform(low))[0]} M:{m.predict(s.transform(mod))[0]}')
+                                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'sklearn'

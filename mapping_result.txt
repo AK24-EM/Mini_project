@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import pickle, numpy as np; s=pickle.load(open('model/kmean_scaler.pkl','rb')); m=pickle.load(open('model/Kmean.pkl','rb')); low=np.array([[32,65,1.72,22.0,20,1.2,58,130,185,4,3]]); mod=np.array([[39,78,1.72,26.3,27,1.0,62,125,175,3,2]]); print(f'L:{m.predict(s.transform(low))[0]} M:{m.predict(s.transform(mod))[0]}')
+                                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/aayushkamble/Desktop/Mini_project/.venv/lib/python3.13/site-packages/sklearn/__init__.py", line 70, in <module>
+  File "/Users/aayushkamble/Desktop/Mini_project/.venv/lib/python3.13/site-packages/sklearn/base.py", line 19, in <module>
+  File "/Users/aayushkamble/Desktop/Mini_project/.venv/lib/python3.13/site-packages/sklearn/utils/__init__.py", line 7, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1159, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1218, in get_data
+TimeoutError: [Errno 60] Operation timed out

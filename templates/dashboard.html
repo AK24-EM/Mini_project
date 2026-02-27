@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Analytics Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg: #0b0e14;
+            --card-bg: #1a1f2b;
+            --text: #e0e6ed;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 500px;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #000;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ANALYTICS HUB</h1>
+
+    <div class="dashboard-grid">
+        <div class="chart-card" id="pca-plot"></div>
+        <div class="chart-card" id="box-plot"></div>
+        <div class="chart-card" id="coeffs-plot"></div>
+        <div class="chart-card" id="valid-plot"></div>
+    </div>
+
+    <div class="nav-links">
+        <a href="/" class="btn">Back Home</a>
+        <a href="/cluster" class="btn">Risk Prediction</a>
+        <a href="/regression" class="btn">Calorie Calculator</a>
+    </div>
+
+    <script>
+        var plots = {{ plots| tojson | safe }};
+
+        Plotly.newPlot('pca-plot', JSON.parse(plots.pca).data, JSON.parse(plots.pca).layout);
+        Plotly.newPlot('box-plot', JSON.parse(plots.box).data, JSON.parse(plots.box).layout);
+        Plotly.newPlot('coeffs-plot', JSON.parse(plots.coeffs).data, JSON.parse(plots.coeffs).layout);
+        Plotly.newPlot('valid-plot', JSON.parse(plots.valid).data, JSON.parse(plots.valid).layout);
+    </script>
+</body>
+
+</html>
